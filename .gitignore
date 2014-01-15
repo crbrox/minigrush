@@ -21,8 +21,6 @@ _testmain.go
 
 *.exe
 
-# grush executable
-grush/grush
 
 # test coverage result files
 cover.out
