@@ -19,12 +19,12 @@ func main() {
 		reqStore, respStore store.Interface
 	)
 	log.Println("Hello World!")
-	config, err := grass.ReadConfig("grush.ini")
+	config, err := minigrush.ReadConfig("grush.ini")
 	if err != nil {
 		log.Fatalln("-", err)
 	}
 
-	reqChan := make(chan *grass.Petition, config.QueueSize)
+	reqChan := make(chan *minigrush.Petition, config.QueueSize)
 	switch config.StoreType {
 	case "dir":
 		reqStore = &dir.Store{config.Dir.RequestPath}
@@ -40,10 +40,10 @@ func main() {
 		log.Fatalf("- Unsupported store type %q\n", config.StoreType)
 	}
 
-	l := &grass.Listener{SendTo: reqChan, PetitionStore: reqStore}
-	c := &grass.Consumer{GetFrom: reqChan, PetitionStore: reqStore, ReplyStore: respStore}
-	r := &grass.Replyer{ReplyStore: respStore}
-	rcvr := &grass.Recoverer{SendTo: reqChan, PetitionStore: reqStore}
+	l := &minigrush.Listener{SendTo: reqChan, PetitionStore: reqStore}
+	c := &minigrush.Consumer{GetFrom: reqChan, PetitionStore: reqStore, ReplyStore: respStore}
+	r := &minigrush.Replyer{ReplyStore: respStore}
+	rcvr := &minigrush.Recoverer{SendTo: reqChan, PetitionStore: reqStore}
 
 	endConsumers := c.Start(config.Consumers)
 	if err := rcvr.Recover(); err != nil {

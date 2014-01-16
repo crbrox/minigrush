@@ -1,4 +1,4 @@
-package grass
+package minigrush
 
 import (
 	"fmt"
