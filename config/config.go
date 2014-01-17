@@ -1,3 +1,4 @@
+//Package config provides types and a function for getting grush configuration.
 package config
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/msbranco/goconfig"
 )
 
+//General configuration data
 type Config struct {
 	//Port to listen to
 	Port string
@@ -21,19 +23,23 @@ type Config struct {
 	//Config for redis store if applies
 	Redis *RedisConfig
 }
+
+//Specific configuration data when redis store is selected.
 type RedisConfig struct {
 	MaxIdle     int
 	MaxActive   int
 	Server      string
 	IdleTimeout time.Duration
 }
+
+//Specific configuration data when redis dir is selected.
 type DirConfig struct {
 	ResponsePath string
 	RequestPath  string
 }
 
-//ReadConfg reads configuration from file with name filename. The file must include a section for the selected store type.
-// The store configuration will be loaded into the returned Config object
+//ReadConfig reads configuration from file with name filename. The file must include a section for the selected store type.
+//The store configuration will be loaded into the returned Config object.
 func ReadConfig(filename string) (*Config, error) {
 	var (
 		redisC *RedisConfig
@@ -85,6 +91,8 @@ func ReadConfig(filename string) (*Config, error) {
 	}, nil
 }
 
+//newRedisConfig returns the RedisConfig data in an already poen configuration file.
+//It must be present or an error will be returned
 func newRedisConfig(cfg *goconfig.ConfigFile) (*RedisConfig, error) {
 	maxIdle, err := cfg.GetInt64("redis", "maxIdle")
 	if err != nil {
@@ -113,6 +121,8 @@ func newRedisConfig(cfg *goconfig.ConfigFile) (*RedisConfig, error) {
 		IdleTimeout: idleTimeout}, nil
 }
 
+//newDirConfig returns the DirConfig data in an already poen configuration file.
+//It must be present or an error will be returned
 func newDirConfig(cfg *goconfig.ConfigFile) (*DirConfig, error) {
 	responsePath, err := cfg.GetString("dir", "responsePath")
 	if err != nil {
