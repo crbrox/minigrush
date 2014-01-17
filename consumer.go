@@ -63,7 +63,7 @@ SERVE:
 	}
 }
 
-//process recreates the request that should be send to the target host
+//process recreates the request that should be sent to the target host
 // it stores the response in the store of replies
 func (c *Consumer) process(petition *Petition) {
 	var (
