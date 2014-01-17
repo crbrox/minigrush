@@ -1,4 +1,6 @@
-// grush.go
+// Executable of grush
+//
+// grush.ini contains configuration data read when starting at run-time
 package main
 
 import (
