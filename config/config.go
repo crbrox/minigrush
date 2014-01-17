@@ -18,7 +18,7 @@ Configuration is read the file grush.ini. An possible content of such file could
 	server=localhost:6379
 	idleTimeout=1h
 
-The storeType choose an store and implies that there is a section in the configuration
+The storeType chooses an store and implies that there is a section in the configuration
 file for the type chosen
 */
 package config
