@@ -5,20 +5,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"sync"
 
 	"github.com/crbrox/store"
 )
 
+//Listener is responsible for receiving requests and store them in the store associated with it.
+//It then passes a reference to the object Petition which wraps the original HTTP request through Sendto channel
+//where the Consumer should collected it for further processing
 type Listener struct {
-	SendTo        chan<- *Petition
+	//Channel for sending petitions
+	SendTo chan<- *Petition
+	//Store for saving petitions in case of crash
 	PetitionStore store.Interface
-	Stopping      bool
-	closeOnce     sync.Once
+	//Flag signaling listener should finish
+	stopping bool
 }
 
+//ServeHTTP implements HTTP handler interface
 func (l *Listener) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if l.Stopping {
+	if l.stopping {
 		http.Error(w, "Estoy parando", 503)
 		return
 	}
@@ -44,6 +49,7 @@ func (l *Listener) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//Stop asks listener to stop receiving petitions
 func (l *Listener) Stop() {
-	l.Stopping = true //Risky??
+	l.stopping = true //Risky??
 }

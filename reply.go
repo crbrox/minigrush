@@ -6,19 +6,26 @@ import (
 	"time"
 )
 
+//Reply represents the response from the target host
 type Reply struct {
-	Id         string
+	//Reply id. Currently the same as the petition id
+	Id string
+	//Possible error in making the request. Could be ""
 	Error      string
 	StatusCode int    // e.g. 200
 	Proto      string // e.g. "HTTP/1.0"
 	Header     http.Header
 	Trailer    http.Header
 	Body       []byte
-	Petition   *Petition
-	Created    time.Time
-	Done       time.Time
+	//Petition that
+	Petition *Petition
+	//Beginning of the request
+	Created time.Time
+	//Time when response was received
+	Done time.Time
 }
 
+//newReply returns the Reply for the Petition made, the http.Response got and the possible error
 func newReply(resp *http.Response, p *Petition, e error) *Reply {
 	var reply = &Reply{Id: p.Id, Petition: p}
 	if e != nil {

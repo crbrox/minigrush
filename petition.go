@@ -12,11 +12,14 @@ import (
 	"code.google.com/p/go-uuid/uuid"
 )
 
+//Constants of names of the  header fields used by Rush
 const (
 	RelayerHost     = "X-Relayer-Host"
 	RelayerProtocol = "X-Relayer-Protocol"
 )
 
+//Petition is a representation from the request received. Headers are cooked to represent
+//the final request meant to be sent to the targer host. The relayer's own headers are removed
 type Petition struct {
 	Id           string
 	TargetHost   string
@@ -34,6 +37,8 @@ type Petition struct {
 	Created      time.Time
 }
 
+//newPetition creates a petition from an hhtp.Request. It checks headers and make necessary transformations.
+// The body is read and saved a slice of byte
 func newPetition(original *http.Request) (*Petition, error) {
 	targetHost := original.Header.Get(RelayerHost)
 	if targetHost == "" {
@@ -71,6 +76,9 @@ func newPetition(original *http.Request) (*Petition, error) {
 		Created:      time.Now()}
 	return relayedRequest, nil
 }
+
+//Request returns the original http.Request with the body restored as a CloserReader
+//so it can be used to do a request to the original target host
 func (p *Petition) Request() (*http.Request, error) {
 	p.URL.Host = p.TargetHost
 	p.URL.Scheme = p.TargetScheme

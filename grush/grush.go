@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/crbrox/minigrush"
+	"github.com/crbrox/minigrush/config"
 	"github.com/crbrox/store"
 	"github.com/crbrox/store/dir"
 	"github.com/crbrox/store/redis"
@@ -19,25 +20,25 @@ func main() {
 		reqStore, respStore store.Interface
 	)
 	log.Println("Hello World!")
-	config, err := minigrush.ReadConfig("grush.ini")
+	cfg, err := config.ReadConfig("grush.ini")
 	if err != nil {
 		log.Fatalln("-", err)
 	}
 
-	reqChan := make(chan *minigrush.Petition, config.QueueSize)
-	switch config.StoreType {
+	reqChan := make(chan *minigrush.Petition, cfg.QueueSize)
+	switch cfg.StoreType {
 	case "dir":
-		reqStore = &dir.Store{config.Dir.RequestPath}
-		respStore = &dir.Store{config.Dir.ResponsePath}
+		reqStore = &dir.Store{cfg.Dir.RequestPath}
+		respStore = &dir.Store{cfg.Dir.ResponsePath}
 	case "redis":
 		optionsStore := redis.StoreOptions{
-			Prefix: "grush-req:", MaxIdle: config.Redis.MaxIdle, MaxActive: config.Redis.MaxActive, Server: config.Redis.Server, IdleTimeout: config.Redis.IdleTimeout,
+			Prefix: "grush-req:", MaxIdle: cfg.Redis.MaxIdle, MaxActive: cfg.Redis.MaxActive, Server: cfg.Redis.Server, IdleTimeout: cfg.Redis.IdleTimeout,
 		}
 		reqStore = redis.NewStore(optionsStore)
 		optionsStore.Prefix = "grush-resp:"
 		respStore = redis.NewStore(optionsStore)
 	default:
-		log.Fatalf("- Unsupported store type %q\n", config.StoreType)
+		log.Fatalf("- Unsupported store type %q\n", cfg.StoreType)
 	}
 
 	l := &minigrush.Listener{SendTo: reqChan, PetitionStore: reqStore}
@@ -45,14 +46,14 @@ func main() {
 	r := &minigrush.Replyer{ReplyStore: respStore}
 	rcvr := &minigrush.Recoverer{SendTo: reqChan, PetitionStore: reqStore}
 
-	endConsumers := c.Start(config.Consumers)
+	endConsumers := c.Start(cfg.Consumers)
 	if err := rcvr.Recover(); err != nil {
 		log.Fatalln("-", err)
 	}
 	http.Handle("/", l)
 	http.Handle("/responses/", http.StripPrefix("/responses/", r))
 	go func() {
-		log.Fatalln("-", http.ListenAndServe(":"+config.Port, nil))
+		log.Fatalln("-", http.ListenAndServe(":"+cfg.Port, nil))
 	}()
 	onEnd(func() {
 		log.Println("\nShutting down grass ...")
