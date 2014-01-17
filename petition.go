@@ -19,7 +19,7 @@ const (
 )
 
 //Petition is a representation from the request received. Header fields are cooked to represent
-//the final request meant to be sent to the targer host. The relayer's own fields are removed
+//the final request meant to be sent to the target host. The relayer's own fields are removed
 type Petition struct {
 	Id           string
 	TargetHost   string
@@ -38,7 +38,7 @@ type Petition struct {
 }
 
 //newPetition creates a petition from an http.Request. It checks header fields and make necessary transformations.
-// The body is read and saved as a slice of byte
+//The body is read and saved as a slice of byte.
 func newPetition(original *http.Request) (*Petition, error) {
 	targetHost := original.Header.Get(RelayerHost)
 	if targetHost == "" {

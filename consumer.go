@@ -28,7 +28,7 @@ type Consumer struct {
 }
 
 //Start starts n goroutines for taking Petitions from the GetFrom channel.
-//It returns a channel for notifying when the consumer has ended (hopefully after a Stop() method invocation)
+//It returns a channel for notifying when the consumer has ended (hopefully after a Stop() method invocation).
 func (c *Consumer) Start(n int) <-chan bool {
 	c.n = n
 	finalDone := make(chan bool)
@@ -44,7 +44,7 @@ func (c *Consumer) Start(n int) <-chan bool {
 	return finalDone
 }
 
-//Loop of taking a petition and making the request it represents
+//Loop of taking a petition and making the request it represents.
 func (c *Consumer) relay() {
 	defer c.wg.Done()
 SERVE:
@@ -64,7 +64,7 @@ SERVE:
 }
 
 //process recreates the request that should be sent to the target host
-// it stores the response in the store of replies
+//it stores the response in the store of replies.
 func (c *Consumer) process(petition *Petition) {
 	var (
 		req   *http.Request
@@ -103,7 +103,7 @@ func (c *Consumer) process(petition *Petition) {
 }
 
 //Stop asks consumer to stop taking petitions. When the stop is complete,
-//the fact will be notified through the channel returned by the Start() method
+//the fact will be notified through the channel returned by the Start() method.
 func (c *Consumer) Stop() {
 	for i := 0; i < c.n; i++ {
 		c.endChan <- true

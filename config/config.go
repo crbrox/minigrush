@@ -1,4 +1,26 @@
-//Package config provides types and a function for getting grush configuration.
+/*
+Package config provides types and a function for getting grush configuration.
+
+Configuration is read the file grush.ini. An possible content of such file could be
+	[default]
+	port=8080
+	queueSize=100000
+	consumers=1000
+	storeType=redis
+
+	[dir]
+	responsePath=RESP
+	requestPath=REQ
+
+	[redis]
+	maxIdle=10000
+	maxActive=10000
+	server=localhost:6379
+	idleTimeout=1h
+
+The storeType choose an store and implies that there is a section in the configuration
+file for the type chosen
+*/
 package config
 
 import (
