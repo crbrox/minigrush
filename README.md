@@ -7,7 +7,7 @@ A reduced and oversimplified version of [Rush][rush], designed to run on a machi
 
 It is still in a very early stage of development, so ...
 
-Some documentation can be found at http://godoc.org/github.com/crbrox/minigrush
-
+Some documentation can be found at
+[![GoDoc](https://godoc.org/github.com/crbrox/minigrush/config?status.png)](https://godoc.org/github.com/crbrox/minigrush)
 
 [rush]: https://github.com/telefonicaid/Rush
