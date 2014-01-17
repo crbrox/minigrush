@@ -6,16 +6,16 @@ import (
 	"github.com/crbrox/store"
 )
 
-//Recoverer takes the petitions stored in PetitionStore and enqueue them again into the SendTo channel.
+//Recoverer takes the petitions stored in PetitionStore and enqueues them again into SendTo.
 type Recoverer struct {
 	SendTo        chan<- *Petition
 	PetitionStore store.Interface
 }
 
-//Recover gets all the petitions stored and send them to a channel for processing by a consumer.
+//Recover gets all the petitions stored and sends them to a channel for processing by a consumer.
 // It returns when all of them are re-enqueued or when an error happens. It should be run before starting
-//a listener (with the same PetitionStore) or new petitions could be enqueued twice. Listeners on a different PetitionStore
-//should not be a problem. A consumer can be started before with the same queue (channel) for avoiding overflow the queue
+//a listener (with the same PetitionStore) or new petitions could be enqueued twice. Listeners with a different PetitionStore
+//should not be a problem. A consumer can be started before with the same PetitionStore to avoid overflowing the queue.
 func (r *Recoverer) Recover() error {
 	ids, err := r.PetitionStore.List()
 	if err != nil {

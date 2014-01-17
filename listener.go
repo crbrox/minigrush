@@ -9,8 +9,8 @@ import (
 	"github.com/crbrox/store"
 )
 
-//Listener is responsible for receiving requests and store them in the store associated with it.
-//It then passes a reference to the object Petition which wraps the original HTTP request through Sendto channel
+//Listener is responsible for receiving requests and storing them in the store associated with it.
+//It then passes a reference to the object Petition which wraps the original HTTP request through the channel Sendto,
 //where the Consumer should collected it for further processing
 type Listener struct {
 	//Channel for sending petitions
