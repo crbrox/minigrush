@@ -42,7 +42,7 @@ type Petition struct {
 func newPetition(original *http.Request) (*Petition, error) {
 	targetHost := original.Header.Get(RelayerHost)
 	if targetHost == "" {
-		return nil, fmt.Errorf("Missing mandatory header %s", RelayerHost)
+		return nil, fmt.Errorf("minigrush: Missing mandatory header %s", RelayerHost)
 	}
 	original.Header.Del(RelayerHost)
 	scheme := strings.ToLower(original.Header.Get(RelayerProtocol))
@@ -51,7 +51,7 @@ func newPetition(original *http.Request) (*Petition, error) {
 	case "":
 		scheme = "http"
 	default:
-		return nil, fmt.Errorf("Unsupported protocol %s", scheme)
+		return nil, fmt.Errorf("minigrush: Unsupported protocol %s", scheme)
 
 	}
 	original.Header.Del(RelayerProtocol)
