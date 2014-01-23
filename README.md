@@ -1,7 +1,7 @@
 minigrush
 =========
 
-A simplified version of [Rush][rush] in the Gorgeous [Go][go]
+A simplified version of [Rush][rush] in the **Gorgeous [Go][go]**
 
 A reduced and oversimplified version of [Rush][rush], designed to run on a machine (or two if you want to use Redis as storage in a different machine)
 
