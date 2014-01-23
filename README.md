@@ -1,7 +1,7 @@
 minigrush
 =========
 
-A simplified version of [Rush][rush] in Go
+A simplified version of [Rush][rush] in the Gorgeous [Go][go]
 
 A reduced and oversimplified version of [Rush][rush], designed to run on a machine (or two if you want to use Redis as storage in a different machine)
 
@@ -11,3 +11,10 @@ Some documentation can be found at
 [![GoDoc](https://godoc.org/github.com/crbrox/minigrush/config?status.png)](https://godoc.org/github.com/crbrox/minigrush)
 
 [rush]: https://github.com/telefonicaid/Rush
+[go]: http://golang.org/
+
+
+
+
+
+[![baby-gopher](https://raw2.github.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org)
