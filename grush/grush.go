@@ -34,10 +34,10 @@ func main() {
 		respStore = &dir.Store{cfg.Dir.ResponsePath}
 	case "redis":
 		optionsStore := redis.StoreOptions{
-			Prefix: "grush-req:", MaxIdle: cfg.Redis.MaxIdle, MaxActive: cfg.Redis.MaxActive, Server: cfg.Redis.Server, IdleTimeout: cfg.Redis.IdleTimeout,
+			Prefix: cfg.Redis.RequestPrefix, MaxIdle: cfg.Redis.MaxIdle, MaxActive: cfg.Redis.MaxActive, Server: cfg.Redis.Server, IdleTimeout: cfg.Redis.IdleTimeout,
 		}
 		reqStore = redis.NewStore(optionsStore)
-		optionsStore.Prefix = "grush-resp:"
+		optionsStore.Prefix = cfg.Redis.ResponsePrefix
 		respStore = redis.NewStore(optionsStore)
 	default:
 		log.Fatalf("- Unsupported store type %q\n", cfg.StoreType)

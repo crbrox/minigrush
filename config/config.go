@@ -48,10 +48,12 @@ type Config struct {
 
 //Specific configuration data when redis store is selected.
 type RedisConfig struct {
-	MaxIdle     int
-	MaxActive   int
-	Server      string
-	IdleTimeout time.Duration
+	MaxIdle        int
+	MaxActive      int
+	Server         string
+	IdleTimeout    time.Duration
+	ResponsePrefix string
+	RequestPrefix  string
 }
 
 //Specific configuration data when redis dir is selected.
@@ -136,11 +138,21 @@ func newRedisConfig(cfg *goconfig.ConfigFile) (*RedisConfig, error) {
 	if err != nil {
 		return nil, fmt.Errorf("readConfig: %v", err)
 	}
+	respPrefix, err := cfg.GetString("redis", "responsePrefix")
+	if err != nil {
+		return nil, fmt.Errorf("readConfig: %v", err)
+	}
+	reqPrefix, err := cfg.GetString("redis", "requestPrefix")
+	if err != nil {
+		return nil, fmt.Errorf("readConfig: %v", err)
+	}
 	return &RedisConfig{
-		MaxIdle:     int(maxIdle),   //check
-		MaxActive:   int(maxActive), //check
-		Server:      server,
-		IdleTimeout: idleTimeout}, nil
+		MaxIdle:        int(maxIdle),   //check
+		MaxActive:      int(maxActive), //check
+		Server:         server,
+		IdleTimeout:    idleTimeout,
+		ResponsePrefix: respPrefix,
+		RequestPrefix:  reqPrefix}, nil
 }
 
 //newDirConfig returns the DirConfig data in an already poen configuration file.
