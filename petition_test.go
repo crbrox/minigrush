@@ -46,6 +46,8 @@ func TestBasic(t *testing.T) {
 	}
 	//This is not necessary probably. Just in case implementation changes
 	original.Header.Del(relayerHostField)
+	original.Header.Del(relayerSchemeField)
+
 	if !reflect.DeepEqual(retrieved.Header, original.Header) {
 		t.Error("retrieved header should be equal to sent header")
 	}
