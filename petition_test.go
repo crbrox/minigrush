@@ -3,7 +3,6 @@ package minigrush
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -19,7 +18,6 @@ const relayerHostField = "x-relayer-host"
 const relayerSchemeField = "x-relayer-protocol"
 
 func TestBasic(t *testing.T) {
-	fmt.Println("Hello World!")
 	bytes.NewReader(body)
 	original, err := http.NewRequest("GET", rushUrl, bytes.NewReader(body))
 	if err != nil {
