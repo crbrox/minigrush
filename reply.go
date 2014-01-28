@@ -37,11 +37,11 @@ func newReply(resp *http.Response, p *Petition, e error) *Reply {
 	reply.Header = resp.Header
 	reply.Trailer = resp.Trailer
 	body, err := ioutil.ReadAll(resp.Body)
-	reply.Done = time.Now()
 	if err != nil {
 		reply.Error = e.Error()
 	} else {
 		reply.Body = body
 	}
+	reply.Done = time.Now()
 	return reply
 }
