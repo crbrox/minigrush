@@ -43,7 +43,7 @@ func TestA(t *testing.T) {
 		Created:      time.Now()}
 	var petitions = []*Petition{p1, p2}
 	petStore := dummy.Store{}
-	petCh := make(chan *Petition, len(petitions))
+	petCh := make(chan *Petition, 1000)
 	for _, p := range petitions {
 		text, err := json.Marshal(p)
 		if err != nil {
@@ -59,8 +59,8 @@ func TestA(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(petCh) < len(petitions) {
-		t.Fatalf("all stored petitions should be enqueued len(petCh) %d len(pseudoPetitions) %d ",
+	if len(petCh) != len(petitions) {
+		t.Fatalf("number of stored petitions should be equal to enqueued ones len(petCh) %d len(petitions) %d ",
 			len(petCh), len(petitions))
 	}
 	for i := 0; i < len(petitions); i++ {
