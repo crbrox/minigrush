@@ -18,7 +18,6 @@ const relayerHostField = "x-relayer-host"
 const relayerSchemeField = "x-relayer-protocol"
 
 func TestBasic(t *testing.T) {
-	bytes.NewReader(body)
 	original, err := http.NewRequest("GET", rushUrl, bytes.NewReader(body))
 	if err != nil {
 		t.Error(err)
