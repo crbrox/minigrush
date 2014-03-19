@@ -22,7 +22,7 @@ type Consumer struct {
 	//number of goroutines consuming petitions
 	n int
 	//channel for asking goroutines to finish
-	endChan chan bool
+	endChan chan struct{}
 	//WaitGroup for goroutines after been notified the should end
 	wg sync.WaitGroup
 }
@@ -32,7 +32,7 @@ type Consumer struct {
 func (c *Consumer) Start(n int) <-chan bool {
 	c.n = n
 	finalDone := make(chan bool)
-	c.endChan = make(chan bool, c.n)
+	c.endChan = make(chan struct{})
 	c.wg.Add(c.n)
 	for i := 0; i < c.n; i++ {
 		go c.relay()
@@ -105,7 +105,5 @@ func (c *Consumer) process(petition *Petition) {
 //Stop asks consumer to stop taking petitions. When the stop is complete,
 //the fact will be notified through the channel returned by the Start() method.
 func (c *Consumer) Stop() {
-	for i := 0; i < c.n; i++ {
-		c.endChan <- true
-	}
+	close(c.endChan)
 }
