@@ -13,8 +13,4 @@ Some documentation can be found at
 [rush]: https://github.com/telefonicaid/Rush
 [go]: http://golang.org/
 
-
-
-
-
-[![baby-gopher](https://raw2.github.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org)
+[![baby-gopher](https://raw.github.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org)
