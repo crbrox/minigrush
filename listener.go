@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync/atomic"
 
 	"github.com/crbrox/store"
 )
@@ -18,12 +19,12 @@ type Listener struct {
 	//Store for saving petitions in case of crash
 	PetitionStore store.Interface
 	//Flag signaling listener should finish
-	stopping bool
+	stopping uint64
 }
 
 //ServeHTTP implements HTTP handler interface
 func (l *Listener) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if l.stopping {
+	if l.Stopped() {
 		http.Error(w, "Estoy parando", 503)
 		return
 	}
@@ -51,5 +52,8 @@ func (l *Listener) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //Stop asks listener to stop receiving petitions
 func (l *Listener) Stop() {
-	l.stopping = true //Risky??
+	atomic.StoreUint64(&l.stopping, 1)
+}
+func (l *Listener) Stopped() bool {
+	return atomic.LoadUint64(&l.stopping) != 0
 }
